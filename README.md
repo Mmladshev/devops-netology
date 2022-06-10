@@ -19,3 +19,4 @@ override.tf.json
 конфиги с именами 
 .terraformrc
 terraform.rc
+privet
