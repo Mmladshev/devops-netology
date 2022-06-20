@@ -1,0 +1,58 @@
+5.
+1024 мб оперативная память
+2 процессора 
+4 мб видео
+64 гб
+
+6. 
+config.vm.provider "virtualbox" do |v|
+  v.memory = 1024
+  v.cpus = 2
+end
+
+8.
+HISTFILESIZE 621
+HISTSIZE 630
+
+Включает два параметра 
+ignorespace - не записывает и в историю команды которые начали с пробела  
+ignoredups - не записывает виторию команду, если она дубль предыдущей
+
+9.
+206
+В случае использования зарезервивованнх паттернов списков. Например touch {1..10} создаст 10 файлов с именами 1,2,3...
+
+10. 
+touch {1..100000)
+Не получится  
+vagrant@vagrant:~$ touch {1..300000}
+-bash: /usr/bin/touch: Argument list too long
+
+11. Конструкция в скрипте которая проверяет истино или ложно условие.
+Прочитал тут http://mywiki.wooledge.org/BashFAQ/031 =)
+
+12.
+vagrant@vagrant:/$ mkdir /tmp/new_path_directory/
+vagrant@vagrant:/$ cp /bin/bash /tmp/new_path_directory/
+vagrant@vagrant:/$ PATH=/tmp/new_path_directory/:$PATH
+vagrant@vagrant:/$ type -a bash
+bash is /tmp/new_path_directory/bash
+bash is /usr/bin/bash
+bash is /bin/bash
+vagrant@vagrant:/$ ll /tmp/new_path_directory/
+total 1164
+drwxrwxr-x  2 vagrant vagrant    4096 Jun 20 14:53 ./
+drwxrwxrwt 12 root    root       4096 Jun 20 14:53 ../
+-rwxr-xr-x  1 vagrant vagrant 1183448 Jun 20 14:53 bash*
+vagrant@vagrant:/$
+
+
+13. 
+man at
+at - запускается в определенное время (top, htop)
+batch - запускается само, когда средний уровень загрузки системы станет меньше чем 1.5 или другое число, заданное в atd 
+
+
+13.
+vagrant suspend
+init 0 
