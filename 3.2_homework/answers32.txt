@@ -1,0 +1,147 @@
+1. 
+Команда внутреняя. Она встроенна в bash, внутрненней, как и многие другие она является из соображений производительности и прямого доступа к внутренним структурам командного интерпретатора.
+Можно использовать внешней вызов /bin/ls, но тогда она будет работать со своим окружением. 
+
+2.
+[mikhail@centos8 ~]$ cat test
+123
+124124
+213123
+qwer
+qtrq
+zzzz
+562334
+
+[mikhail@centos8 ~]$ grep 123 test -c
+2
+[mikhail@centos8 ~]$ grep 123 test | wc -l
+2
+[mikhail@centos8 ~]$
+
+3. 
+vagrant@vagrant:~$ pstree -p
+systemd(1)─┬─ModemManager(707)─┬─{ModemManager}(730)
+           │                   └─{ModemManager}(739)
+
+vagrant@vagrant:~$ systemctl status 1
+● init.scope - System and Service Manager
+     Loaded: loaded
+  Transient: yes
+     Active: active (running) since Mon 2022-06-20 10:41:32 UTC; 5 days ago
+       Docs: man:systemd(1)
+      Tasks: 1 (limit: 1066)
+     Memory: 6.5M
+     CGroup: /init.scope
+             └─1 /sbin/init
+
+4. 
+
+[mikhail@centos8 ~]$ who
+mikhail  pts/0        2022-06-24 21:20 (192.168.1.2)
+mikhail  pts/1        2022-06-25 18:12 (192.168.1.2)
+[mikhail@centos8 ~]$ ls -l /somedir 2>/dev/pts/1
+
+на втором:
+ls: cannot access '/somedir': No such file or directory
+
+5.
+[mikhail@centos8 ~]$ cat test
+123
+124124
+213123
+qwer
+qtrq
+zzzz
+562334
+
+[mikhail@centos8 ~]$ cat <test >test_out
+[mikhail@centos8 ~]$ ls
+Desktop    Downloads  Pictures  Templates  test_out
+Documents  Music      Public    test       Videos
+[mikhail@centos8 ~]$ cat test_out
+123
+124124
+213123
+qwer
+qtrq
+zzzz
+562334
+
+6.
+screens 6.1, 6.2
+
+7.
+bash 5>&1 в текущй сессии создаст дескриптор и перенаправит его в stdout 
+echo netology > /proc/$$/fd/5 воспользуется созданным в сессии дескриптором и выведет через него, если попробовать сделать так в другой открытой сессии, то будет ошибка
+vagrant@vagrant:~$ echo netology > /proc/$$/fd/5
+-bash: /proc/14465/fd/5: No such file or directory
+Которая говорит нам, что в рамках текущий сессии она не знает что такое дескриптор 5 т.к. мы его не создали заранее
+
+8.
+vagrant@vagrant:~$ cat blabla
+cat: blabla: No such file or directory
+vagrant@vagrant:~$ cat blalbla 4>&2 2>&1 1>&4 | grep "No such" -c
+1
+
+9.
+Переменные окружения. env, printenv
+
+10.
+/proc/<PID>/cmdline файл для чтения, содержит полную командную строку для процесса, если он не "зомби" 
+/proc/<PID>/exe ссылка, содержащая фактический путь до файла, если запустить эту ссылку, запустится файл
+
+11.
+grep sse /proc/cpuinfo
+sse4_2
+
+
+12.
+ssh ожидатает подключение от пользователя, а не от процесса. Как говорит стаковерфлоу, можно добавить флаг -t и тогда будет создаваться сессия, но она сразу закрывается. 
+
+vagrant@vagrant:~$ ssh -t localhost 'tty'
+vagrant@localhost's password:
+/dev/pts/2
+Connection to localhost closed.
+
+
+13.
+Я тут по работе случайно запустил миграцию с марины на постгрес не в скрине ... а обратил внимание, только на следующий день, когда ночью она упала из-за того, что сессия отвалилась... 
+Теперь то я точно буду запускать все такие долгие процессы в скрине )))
+Подправил конфиг kernel.yama.ptrace_scope = 0, но это не решило проблему на убунту из вагранда ... все равно ошибка. В любом случае везде пользуюсь редхедом, попробовал на другом.
+сентос8 
+ping ya.ru
+screen -S test
+ps auf
+reptyr 23834
+
+процесс перехватился корректно
+
+14. 
+Выполняет вывод "везде", которое подразумевает себя и файл указаный после stdout, запуск под судо дает права на запись 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
