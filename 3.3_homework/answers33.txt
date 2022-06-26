@@ -1,0 +1,63 @@
+1. 
+vagrant@vagrant:~$ strace /bin/bash -c 'cd /tmp' 2>out2
+vagrant@vagrant:~$ grep tmp out2
+
+*chdir("/tmp")*
+
+2.
+/usr/share/misc/magic.mgc
+
+3.
+Не очень понимаю, как правльно сделать это задание со стороны визуализации.
+touch log2
+ping localhost >log2 &
+ps auf
+видим pid, ищем по нему 
+lsof -p 1081
+удаляем файл, после чего получаем приписку (deleted) в lsof
+echo ''>/proc/1081/fd/1 проходит без ошибки, но обьем в lsof растет.
+Проверил все тоже самое, но без удаления файла, для наглядности.
+Команда echo ''>/proc/1081/fd/1 отрабатывает, и файл становится пустым. Однако при этом в lsof объем всеравно растет. 
+
+4.
+Освобождают ресурсы, но продолжают блокировать запись в таблице процессов.
+
+5.
+
+PID    COMM               FD ERR PATH
+368    systemd-udevd      14   0 /sys/fs/cgroup/unified/system.slice/systemd-udevd.service/cgroup.procs
+368    systemd-udevd      14   0 /sys/fs/cgroup/unified/system.slice/systemd-udevd.service/cgroup.threads
+813    vminfo              6   0 /var/run/utmp
+618    dbus-daemon        -1   2 /usr/local/share/dbus-1/system-services
+618    dbus-daemon        21   0 /usr/share/dbus-1/system-services
+618    dbus-daemon        -1   2 /lib/dbus-1/system-services
+618    dbus-daemon        21   0 /var/lib/snapd/dbus-1/system-services/
+
+6.
+системный вызов 
+       Part of the utsname information is also accessible via  /proc/sys/kernel/{ostype,  hostname,
+       osrelease, version, domainname}.
+
+7.
+; просто последовательно вызываем исполняем команды 
+&& если первая часть успешна(без ошибок) то будет работать вторая часть 
+
+В данном случае нет т.к. set -e Exit immediately if a command exits with a non-zero status. А в первом случае у нас будет ошибка
+
+8.
+
+e - Прерывает исполнение если что-то выполняется с флагом ошибки
+u - выводит ошибку о неустановленных переменных и осуществляет выход
+х - трейс команд по мере выполнения
+о - установка опции  pipefail, возвращает последнюю команду с 0 статусом или 0 если все выполнилось корректно
+
+9.
+S*(S,S+,Ss,Ssl,Ss+) процессы в ожидание завершения
+I*(I,I<) фоновые бездействующие процессы ядра
+< высокий приоритет 
+N низкий приоритет 
+L с заблокированными страницами в памяти 
+s "главная сессия"
+l мультипоточный
++ группа процессов "переднего плана"
+
