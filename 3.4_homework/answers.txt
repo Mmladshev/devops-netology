@@ -1,0 +1,150 @@
+1. 
+vagrant@vagrant:~$ ps -e | grep node_exporter
+  14583 ?        00:00:00 node_exporter
+vagrant@vagrant:~$ sudo systemctl status node_exporter
+● node_exporter.service - Node Exporter
+     Loaded: loaded (/etc/systemd/system/node_exporter.service; enabled; vendor preset: enabled)
+     Active: active (running) since Mon 2022-07-04 18:20:12 UTC; 37min ago
+   Main PID: 14583 (node_exporter)
+      Tasks: 5 (limit: 1066)
+     Memory: 4.4M
+     CGroup: /system.slice/node_exporter.service
+             └─14583 /etc/node_exporter/node_exporter
+
+Jul 04 18:20:12 vagrant node_exporter[14583]: ts=2022-07-04T18:20:12.477Z caller=node_exporter.go:115>
+Jul 04 18:20:12 vagrant node_exporter[14583]: ts=2022-07-04T18:20:12.477Z caller=node_exporter.go:115>
+Jul 04 18:20:12 vagrant node_exporter[14583]: ts=2022-07-04T18:20:12.477Z caller=node_exporter.go:115>
+Jul 04 18:20:12 vagrant node_exporter[14583]: ts=2022-07-04T18:20:12.477Z caller=node_exporter.go:115>
+Jul 04 18:20:12 vagrant node_exporter[14583]: ts=2022-07-04T18:20:12.477Z caller=node_exporter.go:115>
+Jul 04 18:20:12 vagrant node_exporter[14583]: ts=2022-07-04T18:20:12.477Z caller=node_exporter.go:115>
+Jul 04 18:20:12 vagrant node_exporter[14583]: ts=2022-07-04T18:20:12.477Z caller=node_exporter.go:115>
+Jul 04 18:20:12 vagrant node_exporter[14583]: ts=2022-07-04T18:20:12.477Z caller=node_exporter.go:115>
+Jul 04 18:20:12 vagrant node_exporter[14583]: ts=2022-07-04T18:20:12.477Z caller=node_exporter.go:199>
+Jul 04 18:20:12 vagrant node_exporter[14583]: ts=2022-07-04T18:20:12.478Z caller=tls_config.go:195 le>
+
+vagrant@vagrant:~$ sudo systemctl stop node_exporter
+vagrant@vagrant:~$ sudo systemctl start node_exporter
+vagrant@vagrant:~$ sudo systemctl status node_exporter
+● node_exporter.service - Node Exporter
+     Loaded: loaded (/etc/systemd/system/node_exporter.service; enabled; vendor preset: enabled)
+     Active: active (running) since Mon 2022-07-04 18:58:19 UTC; 7s ago
+   Main PID: 15190 (node_exporter)
+      Tasks: 5 (limit: 1066)
+     Memory: 2.5M
+     CGroup: /system.slice/node_exporter.service
+             └─15190 /etc/node_exporter/node_exporter
+
+Jul 04 18:58:19 vagrant node_exporter[15190]: ts=2022-07-04T18:58:19.134Z caller=node_exporter.go:115>
+Jul 04 18:58:19 vagrant node_exporter[15190]: ts=2022-07-04T18:58:19.134Z caller=node_exporter.go:115>
+Jul 04 18:58:19 vagrant node_exporter[15190]: ts=2022-07-04T18:58:19.134Z caller=node_exporter.go:115>
+Jul 04 18:58:19 vagrant node_exporter[15190]: ts=2022-07-04T18:58:19.134Z caller=node_exporter.go:115>
+Jul 04 18:58:19 vagrant node_exporter[15190]: ts=2022-07-04T18:58:19.134Z caller=node_exporter.go:115>
+Jul 04 18:58:19 vagrant node_exporter[15190]: ts=2022-07-04T18:58:19.134Z caller=node_exporter.go:115>
+Jul 04 18:58:19 vagrant node_exporter[15190]: ts=2022-07-04T18:58:19.134Z caller=node_exporter.go:115>
+Jul 04 18:58:19 vagrant node_exporter[15190]: ts=2022-07-04T18:58:19.134Z caller=node_exporter.go:115>
+Jul 04 18:58:19 vagrant node_exporter[15190]: ts=2022-07-04T18:58:19.134Z caller=node_exporter.go:199>
+Jul 04 18:58:19 vagrant node_exporter[15190]: ts=2022-07-04T18:58:19.135Z caller=tls_config.go:195 le>
+
+
+vagrant@vagrant:~$ cat /etc/systemd/system/node_exporter.service
+[Unit]
+Description=Node Exporter
+
+[Service]
+ExecStart=/etc/node_exporter/node_exporter
+EnvironmentFile=/etc/default/node_exporter
+
+[Install]
+WantedBy=default.target
+
+2. 
+node_cpu_seconds_total
+
+memory_MemAvailable_bytes
+node_memory_MemFree
+
+node_disk_io_time_seconds_tota
+node_disk_write_time_seconds_total
+
+node_network_receive_bytes_total
+node_network_receive_errs
+node_network_receive_drop_total
+node_network_transmit_bytes_total
+node_network_transmit_errs_total
+node_network_transmit_drop_total
+
+3. Сделал данное задание чуть чуть иначе, тк вм подключается через сетевой мост
+
+vagrant@vagrant:~$ cat /etc/netdata/netdata.conf
+# NetData Configuration
+
+# The current full configuration can be retrieved from the running
+# server at the URL
+#
+#   http://localhost:19999/netdata.conf
+#
+# for example:
+#
+#   wget -O /etc/netdata/netdata.conf http://localhost:19999/netdata.conf
+#
+
+[global]
+        run as user = netdata
+        web files owner = root
+        web files group = root
+        # Netdata is not designed to be exposed to potentially hostile
+        # networks. See https://github.com/netdata/netdata/issues/164
+        bind socket to IP = 127.0.0.1
+
+[web]
+   default port = 19999
+   bind to = 0.0.0.0
+
+4.
+По поиску выдает данные :
+
+vagrant@vagrant:~$ dmesg | grep virt
+[    0.003497] CPU MTRRs all blank - virtualized system.
+[    0.030612] Booting paravirtualized kernel on KVM
+[    4.485050] systemd[1]: Detected virtualization oracle.
+
+5.
+
+vagrant@vagrant:~$ man sysctl
+vagrant@vagrant:~$ sysctl -n fs.nr_open
+1048576
+Это максимум возможных открытых дискрипторов для ядра
+
+vagrant@vagrant:~$ ulimit -Sn
+1024
+vagrant@vagrant:~$ ulimit -Hn
+1048576
+
+Лимиты которые не могут превысить системный лимит. Софт и хард соответсвенно.
+
+6.
+
+root@vagrant:~# ps -e |grep slee
+  16819 pts/1    00:00:00 sleep
+root@vagrant:~# nsenter -t 16819 -pid -m
+nsenter: cannot open id: No such file or directory
+root@vagrant:~# nsenter -t 16819 -p -m
+root@vagrant:/# ps
+    PID TTY          TIME CMD
+  16827 pts/0    00:00:00 sudo
+  16828 pts/0    00:00:00 bash
+  16846 pts/0    00:00:00 nsenter
+  16847 pts/0    00:00:00 bash
+  16858 pts/0    00:00:00 ps
+root@vagrant:/# exit
+
+7. На аскубунту это называют "fork bomb". Функция, которая вызывает сама себя рекурсивно.
+Она выпускает 2 процесса, которые в свою очередь выпускают еще два и те два ... 
+При отсутствии лимита на число процессов машина быстро исчерпывает физическую память
+Судя по всему это процесс cgroup: fork rejected by pids controller in /user.slice/user-1000.slice/session-1.scope
+Но он у меня почему-то только один, хотя как я понимаю должно быть два т.к. изначально мы выпускаем два снаряда. возможно надо было как-то дольше подождать, и не обрывать.
+
+Избежать этого нам поможет лимит, о котором мы говорили выше ulimit -u 100 , который поставит 100 прцоессов для пользователя. 
+
+
+
