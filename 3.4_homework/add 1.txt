@@ -1,0 +1,21 @@
+1. 
+Если смотреть файл
+
+vagrant@vagrant:~$ cat /etc/systemd/system/node_exporter.service
+[Unit]
+Description=Node Exporter
+
+[Service]
+ExecStart=/etc/node_exporter/node_exporter
+EnvironmentFile=/etc/default/node_exporter
+
+[Install]
+WantedBy=default.target
+
+Мы определеяем в EnvironmentFile и в Environment переменные, которые в дальнейшем можем использовать.
+Если бы Description было бы переменное из такого файла, оно бы содержало значекние "Node Exporter" и для того,
+что бы его вызвать нам надо было написать ${Description} использовать его
+
+т.е. к пример ExecStart=/etc/node_exporter/node_exporter ${Description}
+
+
