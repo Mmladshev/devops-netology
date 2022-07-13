@@ -1,0 +1,261 @@
+1.
+
+vagrant@vagrant:~$ ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+    inet6 ::1/128 scope host
+       valid_lft forever preferred_lft forever
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+    link/ether 08:00:27:a2:6b:fd brd ff:ff:ff:ff:ff:ff
+    inet 10.0.2.15/24 brd 10.0.2.255 scope global dynamic eth0
+       valid_lft 84225sec preferred_lft 84225sec
+    inet6 fe80::a00:27ff:fea2:6bfd/64 scope link
+       valid_lft forever preferred_lft forever
+vagrant@vagrant:~$ ifconfig
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.0.2.15  netmask 255.255.255.0  broadcast 10.0.2.255
+        inet6 fe80::a00:27ff:fea2:6bfd  prefixlen 64  scopeid 0x20<link>
+        ether 08:00:27:a2:6b:fd  txqueuelen 1000  (Ethernet)
+        RX packets 108025  bytes 145560845 (145.5 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 54654  bytes 3395386 (3.3 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 62  bytes 5662 (5.6 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 62  bytes 5662 (5.6 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+vagrant@vagrant:~$ ip link
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP mode DEFAULT group default qlen 1000
+    link/ether 08:00:27:a2:6b:fd brd ff:ff:ff:ff:ff:ff
+
+ ipconfig
+
+Windows IP Configuration
+
+
+Unknown adapter Подключение по локальной сети:
+
+   Connection-specific DNS Suffix  . :
+   Link-local IPv6 Address . . . . . : fe80::fd63:512a:3e39:74e0%7
+   IPv4 Address. . . . . . . . . . . : 10.101.0.6
+   Subnet Mask . . . . . . . . . . . : 255.255.255.255
+   Default Gateway . . . . . . . . . :
+
+Ethernet adapter vEthernet (WSL):
+
+   Connection-specific DNS Suffix  . :
+   Link-local IPv6 Address . . . . . : fe80::2823:8a0a:e56f:f299%53
+   IPv4 Address. . . . . . . . . . . : 172.30.96.1
+   Subnet Mask . . . . . . . . . . . : 255.255.240.0
+   Default Gateway . . . . . . . . . :
+
+Ethernet adapter Ethernet:
+
+   Connection-specific DNS Suffix  . :
+   Link-local IPv6 Address . . . . . : fe80::3012:9e0b:fd00:c09e%13
+   IPv4 Address. . . . . . . . . . . : 192.168.1.2
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Default Gateway . . . . . . . . . : fe80::1%13
+                                       192.168.1.1
+
+Ethernet adapter Ethernet 2:
+
+   Connection-specific DNS Suffix  . :
+   Link-local IPv6 Address . . . . . : fe80::1138:df9b:d4e0:bd25%9
+   IPv4 Address. . . . . . . . . . . : 192.168.56.1
+   Subnet Mask . . . . . . . . . . . : 255.255.255.0
+   Default Gateway . . . . . . . . . :
+
+Ethernet adapter Ethernet 5:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . :
+
+Ethernet adapter VirtualBox Host-Only Network:
+
+   Connection-specific DNS Suffix  . :
+   Link-local IPv6 Address . . . . . : fe80::3143:f9fd:2204:af8d%22
+   Autoconfiguration IPv4 Address. . : 169.254.175.141
+   Subnet Mask . . . . . . . . . . . : 255.255.0.0
+   Default Gateway . . . . . . . . . :
+
+Ethernet adapter Ethernet 3:
+
+   Media State . . . . . . . . . . . : Media disconnected
+   Connection-specific DNS Suffix  . :
+
+2. 
+
+Как я понял это протокол LLDP. 
+В линуксе за это овтечает пакет lldpd и вызвать lldpctl
+
+mikhail@mlhome-linux:~$ lldpctl
+-------------------------------------------------------------------------------
+LLDP neighbors:
+-------------------------------------------------------------------------------
+Interface:    enp3s0, via: LLDP, RID: 1, Time: 0 day, 00:08:57
+  Chassis:
+    ChassisID:    mac 08:00:27:36:aa:b0
+    SysName:      centos8
+    SysDescr:     CentOS Stream 8 Linux 4.18.0-394.el8.x86_64 #1 SMP Tue May 31 16:19:11 UTC 2022 x86_64
+    MgmtIP:       192.168.1.8
+    MgmtIP:       fe80::a00:27ff:fe36:aab0
+    Capability:   Bridge, on
+    Capability:   Router, off
+    Capability:   Wlan, off
+    Capability:   Station, off
+  Port:
+    PortID:       mac 08:00:27:36:aa:b0
+    PortDescr:    enp0s3
+    TTL:          120
+    PMD autoneg:  supported: yes, enabled: yes
+      Adv:          10Base-T, HD: yes, FD: yes
+      Adv:          100Base-TX, HD: yes, FD: yes
+      Adv:          1000Base-T, HD: no, FD: yes
+      MAU oper type: 1000BaseTFD - Four-pair Category 5 UTP, full duplex mode
+-------------------------------------------------------------------------------
+
+3. 
+vlan
+команда vconfig, которая выдает предупреждение о том, надо пользоваться ip, т.к. его скоро удалят.
+
+vconfig add eth0 33
+ifconfig eth0.33 192.168.1.33 netmask 255.255.255.0 up
+
+vagrant@vagrant:~$ ifconfig
+eth0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.0.2.15  netmask 255.255.255.0  broadcast 10.0.2.255
+        inet6 fe80::a00:27ff:fea2:6bfd  prefixlen 64  scopeid 0x20<link>
+        ether 08:00:27:a2:6b:fd  txqueuelen 1000  (Ethernet)
+        RX packets 841  bytes 84867 (84.8 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 616  bytes 72621 (72.6 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+eth0.33: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.1.33  netmask 255.255.255.0  broadcast 192.168.1.255
+        inet6 fe80::a00:27ff:fea2:6bfd  prefixlen 64  scopeid 0x20<link>
+        ether 08:00:27:a2:6b:fd  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 7  bytes 586 (586.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 14  bytes 1270 (1.2 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 14  bytes 1270 (1.2 KB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+
+============================
+sudo ip link add link eth0 name eth0.66 type vlan id 66
+vagrant@vagrant:~$ ip -d link show eth0.66
+4: eth0.66@eth0: <BROADCAST,MULTICAST> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether 08:00:27:a2:6b:fd brd ff:ff:ff:ff:ff:ff promiscuity 0 minmtu 0 maxmtu 65535
+    vlan protocol 802.1Q id 66 <REORDER_HDR> addrgenmode eui64 numtxqueues 1 numrxqueues 1 gso_max_size 65536 gso_max_segs 65535
+
+ip addr add 192.168.1.8/24 dev eth0.66
+sudo ip link set eth0.66 up
+
+auto eth0.33
+iface eth0.33 inet static
+    address 192.168.1.33
+    netmask 255.255.255.0
+    vlan-raw-device eth0
+
+
+4.
+
+Агрегация происходит в диамическом и статическом режиме.
+Существует 7 режимов
+Mode-0(balance-rr) 
+Mode-1(active-backup) 
+Mode-2(balance-xor) 
+Mode-3(broadcast) 
+Mode-4(802.3ad) 
+Mode-5(balance-tlb) 
+Mode-6(balance-alb) 
+
+Также настройка происходит в /etc/network/interfaces или /etc/sysconfig/network-scripts/ или /etc/netplan
+я пробовал на убунте и сентосе
+# The primary network interface
+auto bond0
+iface bond0 inet static
+    address 192.168.1.150
+    netmask 255.255.255.0    
+    gateway 192.168.1.1
+    dns-nameservers 192.168.1.1 8.8.8.8
+    dns-search domain.local
+        slaves eth0 eth1
+        bond_mode 0
+        bond-miimon 100
+        bond_downdelay 200
+        bound_updelay 200
+
+
+5.
+
+/29 - 8 
+/24 - 256
+256/8 = 32 
+
+
+10.10.10.0 - адрес 
+10.10.10.7 - броадкаст
+10.10.10.{1..6} - адреса хостов
+255.255.255.248 - маска подсети
+
+6.
+
+Я не очень понял вопрос... по идее из любой отличной от этих 3х
+Что есть еще ряд зарезервированных по умолчанию
+Подсеть	Назначение
+0.0.0.0/8	Адреса источников пакетов "этой" ("своей") сети, предназначены для локального использования на хосте при создании сокетов IP. Адрес 0.0.0.0/32 используется для указания адреса источника самого хоста.
+10.0.0.0/8	Для использования в частных сетях.
+127.0.0.0/8	Подсеть для коммуникаций внутри хоста.
+169.254.0.0/16	Канальные адреса; подсеть используется для автоматического конфигурирования адресов IP в случает отсутствия сервера DHCP.
+172.16.0.0/12	Для использования в частных сетях.
+100.64.0.0/10	Для использования в сетях сервис-провайдера.
+192.0.0.0/24	Регистрация адресов специального назначения.
+192.0.2.0/24	Для примеров в документации.
+192.168.0.0/16	Для использования в частных сетях.
+198.51.100.0/24	Для примеров в документации.
+198.18.0.0/15	Для стендов тестирования производительности.
+203.0.113.0/24	Для примеров в документации.
+240.0.0.0/4	Зарезервировано для использования в будущем.
+255.255.255.255	Ограниченный широковещательный адрес.
+
+т.е. нам надо не попасть сюда и взять маску /26 на максимум 64 хоста
+Думаю что можно взять подсеть 100.70.70.0/26
+
+7.
+
+arp -a помотреть
+arp -d <IP> удалить точечно IP адрес 
+netsh interface ip delete arpcache - гугл говорит что так
+
+
+
+ip neigh - посмотреть
+ip neigh flush all - удалить
+sudo ip neigh delete <IP> dev <eth> - удалить адрес и его интерфейс
+
+
+
+
+
+
