@@ -1,0 +1,117 @@
+User Access Verification
+
+Username: rviews
+route-views>show ip route 82.118.29.44
+Routing entry for 82.118.29.0/24
+  Known via "bgp 6447", distance 20, metric 10
+  Tag 3257, type external
+  Last update from 89.149.178.10 6w4d ago
+  Routing Descriptor Blocks:
+  * 89.149.178.10, from 89.149.178.10, 6w4d ago
+      Route metric is 10, traffic share count is 1
+      AS Hops 3
+      Route tag 3257
+      MPLS label: none
+route-views>show bgp 82.118.29.44
+BGP routing table entry for 82.118.29.0/24, version 2309402719
+Paths: (23 available, best #23, table default)
+  Not advertised to any peer
+  Refresh Epoch 1
+  20912 3257 60068 206092
+    212.66.96.126 from 212.66.96.126 (212.66.96.126)
+      Origin IGP, localpref 100, valid, external
+      Community: 3257:4000 3257:8830 3257:50001 3257:50110 3257:54600 3257:54601 20912:65004
+      path 7FE0D6CD0B08 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  3333 1257 1299 60068 206092
+    193.0.0.56 from 193.0.0.56 (193.0.0.56)
+      Origin IGP, localpref 100, valid, external
+      Community: 1257:50 1257:51 1257:2000 1257:3528 1257:4103
+      path 7FE0F76E4B08 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  4901 6079 33891 60068 206092
+    162.250.137.254 from 162.250.137.254 (162.250.137.254)
+      Origin IGP, localpref 100, valid, external
+      Community: 65000:10100 65000:10300 65000:10400
+      path 7FE14508AA70 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  7018 1299 60068 206092
+    12.0.1.63 from 12.0.1.63 (12.0.1.63)
+      Origin IGP, localpref 100, valid, external
+      Community: 7018:5000 7018:37232
+      path 7FE01430ADC8 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  3267 1299 60068 206092
+    194.85.40.15 from 194.85.40.15 (185.141.126.1)
+      Origin IGP, metric 0, localpref 100, valid, external
+      path 7FE08088CB38 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  1351 6939 33891 60068 206092
+    132.198.255.253 from 132.198.255.253 (132.198.255.253)
+      Origin IGP, localpref 100, valid, external
+      path 7FE1849FF908 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+  Refresh Epoch 1
+  101 174 60068 206092
+    209.124.176.223 from 209.124.176.223 (209.124.176.223)
+      Origin IGP, localpref 100, valid, external
+      Community: 101:20100 101:20110 101:22100 174:21101 174:22014
+      Extended Community: RT:101:22100
+      path 7FE183DCBB88 RPKI State valid
+      rx pathid: 0, tx pathid: 0
+
+
+2.
+vagrant@vagrant:~$ sudo ip link add dummy0 type dummy
+vagrant@vagrant:~$ ip -c -br link
+lo               UNKNOWN        00:00:00:00:00:00 <LOOPBACK,UP,LOWER_UP>
+eth0             UP             08:00:27:a2:6b:fd <BROADCAST,MULTICAST,UP,LOWER_UP>
+dummy0           DOWN           66:d9:49:dc:18:f3 <BROADCAST,NOARP>
+vagrant@vagrant:~$ sudo ip route add 192.168.1.0/24 via 10.0.2.15
+vagrant@vagrant:~$ sudo ip route add 192.168.2.0/24 dev eth0
+vagrant@vagrant:~$ sudo ip route add 192.168.3.0/24 dev eth0 metric 100
+vagrant@vagrant:~$ ip route show
+default via 10.0.2.2 dev eth0 proto dhcp src 10.0.2.15 metric 100
+10.0.2.0/24 dev eth0 proto kernel scope link src 10.0.2.15
+10.0.2.2 dev eth0 proto dhcp scope link src 10.0.2.15 metric 100
+192.168.1.0/24 via 10.0.2.15 dev eth0
+192.168.2.0/24 dev eth0 scope link
+192.168.3.0/24 dev eth0 scope link metric 100
+
+
+3.
+[root@mysecindlinux network-scripts]# ss -ltp
+State       Recv-Q Send-Q                                                         Local Address:Port                                                                          Peer Address:Port
+LISTEN      0      100                                                                127.0.0.1:smtp                                                                                     *:*                     users:(("master",pid=1600,fd=13))
+LISTEN      0      128                                                                        *:sunrpc                                                                                   *:*                     users:(("rpcbind",pid=663,fd=8))
+LISTEN      0      5                                                              192.168.122.1:domain                                                                                   *:*                     users:(("dnsmasq",pid=1456,fd=6))
+LISTEN      0      128                                                                        *:ssh                                                                                      *:*                     users:(("sshd",pid=1104,fd=3))
+LISTEN      0      128                                                                127.0.0.1:ipp                                                                                      *:*                     users:(("cupsd",pid=1103,fd=11))
+LISTEN      0      100                                                                    [::1]:smtp                                                                                  [::]:*                     users:(("master",pid=1600,fd=14))
+LISTEN      0      128                                                                     [::]:zabbix-agent                                                                          [::]:*                     users:(("zabbix_agent2",pid=5141,fd=8))
+LISTEN      0      128                                                                     [::]:sunrpc                                                                                [::]:*                     users:(("rpcbind",pid=663,fd=11))
+LISTEN      0      128                                                                     [::]:ssh                                                                                   [::]:*                     users:(("sshd",pid=1104,fd=4))
+LISTEN      0      128                                                                    [::1]:ipp                                                                                   [::]:*                     users:(("cupsd",pid=1103,fd=10))
+
+4.
+[root@mysecindlinux network-scripts]# ss -lup
+State       Recv-Q Send-Q                                                         Local Address:Port                                                                          Peer Address:Port
+UNCONN      0      0                                                                          *:pkix-3-ca-ra                                                                             *:*                     users:(("rpcbind",pid=663,fd=7))
+UNCONN      0      0                                                                          *:mdns                                                                                     *:*                     users:(("avahi-daemon",pid=665,fd=12))
+UNCONN      0      0                                                                          *:38450                                                                                    *:*                     users:(("avahi-daemon",pid=665,fd=13))
+UNCONN      0      0                                                              192.168.122.1:domain                                                                                   *:*                     users:(("dnsmasq",pid=1456,fd=5))
+UNCONN      0      0                                                                   *%virbr0:bootps                                                                                   *:*                     users:(("dnsmasq",pid=1456,fd=3))
+UNCONN      0      0                                                                          *:bootpc                                                                                   *:*                     users:(("dhclient",pid=912,fd=6))
+UNCONN      0      0                                                                          *:sunrpc                                                                                   *:*                     users:(("rpcbind",pid=663,fd=6))
+UNCONN      0      0                                                                       [::]:pkix-3-ca-ra                                                                          [::]:*                     users:(("rpcbind",pid=663,fd=10))
+UNCONN      0      0                                                                       [::]:sunrpc                                                                                [::]:* 
+
+
+5.
+Схема из моего заббикса во вложение. 
+
